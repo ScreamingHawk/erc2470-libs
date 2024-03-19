@@ -1,66 +1,45 @@
-## Foundry
+# ERC-2470 Libs
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
+This repository contains helpers for interacting with the ERC-2470 Singleton Deployer in [forge scripts](https://book.getfoundry.sh/reference/forge/forge-script).
 
 ## Usage
 
-### Build
+Install this package via forge install:
 
-```shell
-$ forge build
+```bash
+forge install ScreamingHawk/erc2470-libs
 ```
 
-### Test
+Base your scripts on the `SingletonDeployer` script contract:
 
-```shell
-$ forge test
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.18;
+
+import {SingletonDeployer, console} from "erc2470-libs/script/SingletonDeployer.s.sol";
+import {MyContract} from "../src/MyContract.sol";
+
+contract Deploy is SingletonDeployer {
+    function run() external {
+        bytes32 salt = bytes32(0);
+        address exampleConstructorArg = address(0);
+
+        bytes memory initCode = abi.encodePacked(type(MyContract).creationCode, abi.encode(exampleConstructorArg));
+
+        address expectedAddr = _singletonAddressOf(initCode, salt);
+        address actualAddr = _deployIfNotAlready(initCode, salt);
+    }
+}
 ```
 
-### Format
+> [!WARNING]
+> Forge is unable to automatically verify deployments created via the `SingletonDeployer`. You will need to manually verify the contract using the `forge verify-contract` command.
 
-```shell
-$ forge fmt
-```
+### Git Hooks
 
-### Gas Snapshots
+To install git hooks run the following:
 
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```bash
+chmod +x .githooks/pre-commit
+git config core.hooksPath .githooks
 ```
