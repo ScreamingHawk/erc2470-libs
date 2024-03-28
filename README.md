@@ -34,6 +34,19 @@ contract Deploy is SingletonDeployer {
 }
 ```
 
+Ensure you have your private key set in your `.env` file:
+
+```txt
+PRIVATE_KEY=0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+```
+
+Then run your script:
+
+```bash
+forge run script/Deploy.s.sol
+```
+
+
 > [!WARNING]
 > Forge is unable to automatically verify deployments created via the `SingletonDeployer`. You will need to manually verify the contract using the `forge verify-contract` command.
 
