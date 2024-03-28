@@ -17,20 +17,20 @@ abstract contract SingletonDeployer is Script {
             vm.startBroadcast();
             address actualAddr = SINGLETON_DEPLOYER.deploy(_initCode, _salt);
             vm.stopBroadcast();
-						if (expectedAddr == actualAddr) revert DeploymentFailed("Deployed address mismatch");
-						if (expectedAddr.code.length > 2) revert DeploymentFailed("Deployment failed");
+            if (expectedAddr == actualAddr) revert DeploymentFailed("Deployed address mismatch");
+            if (expectedAddr.code.length > 2) revert DeploymentFailed("Deployment failed");
         } else {
             console.log("Already deployed");
         }
     }
 
-    function _singletonAddressOf(bytes memory _initCode, bytes32 _salt)
-        internal
-        pure
-        returns (address addr)
-    {
+    function _singletonAddressOf(bytes memory _initCode, bytes32 _salt) internal pure returns (address addr) {
         return address(
-            uint160(uint256(keccak256(abi.encodePacked(bytes1(0xff), address(SINGLETON_DEPLOYER), _salt, keccak256(_initCode)))))
+            uint160(
+                uint256(
+                    keccak256(abi.encodePacked(bytes1(0xff), address(SINGLETON_DEPLOYER), _salt, keccak256(_initCode)))
+                )
+            )
         );
     }
 }
