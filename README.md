@@ -1,6 +1,6 @@
 # ERC-2470 Libs
 
-This repository contains helpers for interacting with the ERC-2470 Singleton Deployer in [forge scripts](https://book.getfoundry.sh/reference/forge/forge-script).
+This repository contains helpers for interacting with the [ERC-2470 Singleton Deployer](https://eips.ethereum.org/EIPS/eip-2470) in [forge scripts](https://book.getfoundry.sh/reference/forge/forge-script).
 
 ## Usage
 
