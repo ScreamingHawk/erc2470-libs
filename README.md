@@ -21,13 +21,15 @@ import {MyContract} from "../src/MyContract.sol";
 
 contract Deploy is SingletonDeployer {
     function run() external {
+        uint256 pk = vm.envUint("PRIVATE_KEY");
+
         bytes32 salt = bytes32(0);
         address exampleConstructorArg = address(0);
 
         bytes memory initCode = abi.encodePacked(type(MyContract).creationCode, abi.encode(exampleConstructorArg));
 
         address expectedAddr = _singletonAddressOf(initCode, salt);
-        address actualAddr = _deployIfNotAlready("MyContract", initCode, salt);
+        address actualAddr = _deployIfNotAlready("MyContract", initCode, salt, pk);
     }
 }
 ```
