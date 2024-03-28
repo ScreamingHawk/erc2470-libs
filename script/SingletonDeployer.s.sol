@@ -10,17 +10,17 @@ error DeploymentFailed(string reason);
 abstract contract SingletonDeployer is Script {
     ISingletonFactory private constant SINGLETON_FACTORY = ISingletonFactory(SINGLETON_FACTORY_ADDR);
 
-    function _deployIfNotAlready(bytes memory _initCode, bytes32 _salt) internal {
+    function _deployIfNotAlready(string memory name, bytes memory _initCode, bytes32 _salt) internal {
         address expectedAddr = _singletonAddressOf(_initCode, _salt);
         if (expectedAddr.code.length <= 2) {
-            console.log("Performing deployment");
+            console.log(name, "deploying to", expectedAddr);
             vm.startBroadcast();
             address actualAddr = SINGLETON_FACTORY.deploy(_initCode, _salt);
             vm.stopBroadcast();
             if (expectedAddr != actualAddr) revert DeploymentFailed("Deployed address mismatch");
             if (expectedAddr.code.length <= 2) revert DeploymentFailed("Deployment failed");
         } else {
-            console.log("Already deployed");
+            console.log(name, "already deployed to", expectedAddr);
         }
     }
 

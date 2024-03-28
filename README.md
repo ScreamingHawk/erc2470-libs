@@ -27,7 +27,7 @@ contract Deploy is SingletonDeployer {
         bytes memory initCode = abi.encodePacked(type(MyContract).creationCode, abi.encode(exampleConstructorArg));
 
         address expectedAddr = _singletonAddressOf(initCode, salt);
-        address actualAddr = _deployIfNotAlready(initCode, salt);
+        address actualAddr = _deployIfNotAlready("MyContract", initCode, salt);
     }
 }
 ```
