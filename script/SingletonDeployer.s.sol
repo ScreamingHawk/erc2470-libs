@@ -17,8 +17,8 @@ abstract contract SingletonDeployer is Script {
             vm.startBroadcast();
             address actualAddr = SINGLETON_FACTORY.deploy(_initCode, _salt);
             vm.stopBroadcast();
-            if (expectedAddr == actualAddr) revert DeploymentFailed("Deployed address mismatch");
-            if (expectedAddr.code.length > 2) revert DeploymentFailed("Deployment failed");
+            if (expectedAddr != actualAddr) revert DeploymentFailed("Deployed address mismatch");
+            if (expectedAddr.code.length <= 2) revert DeploymentFailed("Deployment failed");
         } else {
             console.log("Already deployed");
         }
