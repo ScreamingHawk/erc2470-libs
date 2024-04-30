@@ -40,10 +40,10 @@ Ensure you have your private key set in your `.env` file:
 PRIVATE_KEY=0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 ```
 
-Then run your script:
+Then run your script using [forge script](https://book.getfoundry.sh/reference/forge/forge-script):
 
 ```bash
-forge run script/Deploy.s.sol
+forge script script/Deploy.s.sol
 ```
 
 
