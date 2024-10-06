@@ -34,6 +34,15 @@ contract Deploy is SingletonDeployer {
 }
 ```
 
+This script will deploy your contract using the `SingletonDeployer` and output the address of the deployed contract.
+If your contract has already been deployed, the address will be returned without deploying again.
+If the `SingletonDeployer` has not yet been deployed on chain, that will be done first.
+
+> [!NOTE]
+> The `SingletonDeployer` has a fixed gas cost which may not be compatible with all networks. If deployment fails, check the gas settings of the network.
+> A network base fee exceeding 100 gwei will cause the deployment to fail.
+> Networks requiring additions gas costs (L2, etc) will require additional funds for the factory deployer.
+
 Ensure you have your private key set in your `.env` file:
 
 ```txt
@@ -46,9 +55,8 @@ Then run your script using [forge script](https://book.getfoundry.sh/reference/f
 forge script script/Deploy.s.sol
 ```
 
-
 > [!WARNING]
-> Forge is unable to automatically verify deployments created via the `SingletonDeployer`. You will need to manually verify the contract using the `forge verify-contract` command.
+> Forge is unable to automatically verify deployments created via the `SingletonDeployer`. You will need to manually verify the contract using the `forge verify` command.
 
 ### Git Hooks
 
@@ -57,4 +65,16 @@ To install git hooks run the following:
 ```bash
 chmod +x .githooks/pre-commit
 git config core.hooksPath .githooks
+```
+
+### Testing
+
+Test by running the `MockERC20Deployer` script against a local anvil instance (or the network of your choice):
+
+```bash
+anvil
+```
+
+```bash
+forge script script/MockERC20Deployer.s.sol --rpc-url http://localhost:8545
 ```
